@@ -8,27 +8,23 @@ public class RoundRobinLoadBalancerAlgorithm implements LoadBalancerAlgorithm {
 
     private static volatile RoundRobinLoadBalancerAlgorithm instance;
 
-    private List<String> servers;
-    private AtomicInteger currentServerIndex;
+    private final List<String> servers;
+    private final AtomicInteger currentServerIndex;
 
     private RoundRobinLoadBalancerAlgorithm() {
         currentServerIndex = new AtomicInteger(0);
-        servers = List.of("http://localhost:8080","http://localhost:8081");
-
+        servers = List.of("http://localhost:8080", "http://localhost:8081");
     }
 
     public static LoadBalancerAlgorithm getInstance() {
-        LoadBalancerAlgorithm lba = instance;
-
-        if (lba == null) {
+        if (instance == null) {
             synchronized (RoundRobinLoadBalancerAlgorithm.class) {
-                lba = instance;
-                if (lba == null) {
-                    lba = new RoundRobinLoadBalancerAlgorithm();
+                if (instance == null) {
+                    instance = new RoundRobinLoadBalancerAlgorithm();
                 }
             }
         }
-        return lba;
+        return instance;
     }
 
     @Override

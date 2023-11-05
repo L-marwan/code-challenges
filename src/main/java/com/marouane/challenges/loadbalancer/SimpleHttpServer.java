@@ -23,7 +23,7 @@ public class SimpleHttpServer {
         System.out.println("Server started on port 8080...");
     }
 
-    private static HttpServer getServer(String hostname, int port, String path) throws IOException {
+    public static HttpServer getServer(String hostname, int port, String path) throws IOException {
         HttpServer server = HttpServer.create(new InetSocketAddress(hostname, port), 0);
 
         ExecutorService threadPoolExecutor = Executors.newVirtualThreadPerTaskExecutor();

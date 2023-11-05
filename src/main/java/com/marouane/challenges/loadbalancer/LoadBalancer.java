@@ -13,6 +13,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.Logger;
 
 public class LoadBalancer {
 
@@ -37,6 +38,7 @@ public class LoadBalancer {
     static class MyHttpHandler implements HttpHandler {
 
         private LoadBalancerAlgorithm algo;
+        Logger logger = Logger.getLogger(this.getClass().toString());
 
         public MyHttpHandler(LoadBalancerAlgorithm algo) {
             this.algo = algo;
@@ -44,7 +46,8 @@ public class LoadBalancer {
 
         @Override
         public void handle(HttpExchange httpExchange) throws IOException {
-            System.out.println("handle request " + httpExchange);
+
+            logger.info("handle request %s ".formatted(httpExchange.getRequestURI()));
             String requestParamValue = null;
             if ("GET".equals(httpExchange.getRequestMethod())) {
                 requestParamValue = httpExchange.getRequestURI().toString();
